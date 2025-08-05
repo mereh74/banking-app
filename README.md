@@ -1,25 +1,36 @@
 # Banking App
 
-A modern, professional banking application built with React, TypeScript, and Vite. This application provides a clean interface for viewing account information and transaction history, with real-time data from the Treasury Prime API.
+A simple prototype of a banking application built with React, TypeScript, and Vite. This application provides a clean interface for viewing account information and transaction history, with real-time data from the Treasury Prime API.
 
-## 🚀 Features
-
-- **Modern UI/UX**: Professional banking interface with smooth animations
-- **Real-time Data**: Live account and transaction data from Treasury Prime API
-- **Expandable Transactions**: Click to view detailed transaction information
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile
-- **Dark Mode Support**: Automatic theme switching based on user preference
-- **Type Safety**: Full TypeScript implementation for better development experience
-- **Styled Components**: Modern CSS-in-JS styling with dynamic theming
-
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack and justification for use
 
 - **Frontend**: React 18 with TypeScript
+  - TypeScript provides the ability to strongly type values, making it possible to catch type-related errors at compile time rather than run time. It also enables autocomplete and inline documentation within the IDE, making the lives of developers much easier.
 - **Build Tool**: Vite
 - **Styling**: Styled Components
+  - Styled Components provides clean css-in-TypeScript capabilities, avoiding the need for separate css files. These components are easy to reason about and live side-by-side with the elements they are used for.
 - **State Management**: React Context API
+  - The choice to use React's Context API was made for two main reasons. One, we can encapsulate the account and transaction state (and the details of populating it) in one area - the `BankAccountContext`. Two, the current application is simple enough that it doesn't require anything more complex for state management (such as Redux).
 - **API**: Treasury Prime Banking API
 - **Environment**: Node.js
+
+## 🔮 Future considerations
+
+- **Application State Management**
+  - As more features are added to this application, the complexity of managing its state will grow. The React Context API provides good support for state management for simple use cases and can continue to be used in parallel with other solutions. However, it will be prudent to investigate the use of libraries such as [React Redux](https://react-redux.js.org/) for managing more complex application state.
+- **Routing**
+  - As the current application only contains one view - `TransactionList.tsx` - routing was not a consideration at this time. In the future, as we add other views and navigation, we will need a solution for routing such as [React Router](https://reactrouter.com/).
+- **Remote State Management**
+  - The application is currently managing its remote state within the `BankAccountProvider` using the `useEffect` and `useState` hooks provided by React. This is sufficient for now, as the application only requires fetching the data once at application load time. As we add more features, it will become necessary to consider things like caching and keeping the UI in sync with remote state from the Treasury Prime API. For this, we can investigate the use of solutions such as [Tanstack Query](https://tanstack.com/query/latest).
+- **Automated Testing**
+  - As this is a simple prototype, no automated testing has been added. If this application were ever to be deployed to production, a prerequisite should be the addition of:
+    - Unit tests
+      - between 90% and 100% test coverage
+      - recommended use of [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+  - End-to-end behavioral tests
+    - these should cover - at minimum - the happy-path scenarios of the application
+    - they should be run as part of the integration and deployment pipelines
+    - recommended use of [Cypress](https://www.cypress.io/) or [Playwright](https://playwright.dev/) for testing frameworks.
 
 ## 📋 Prerequisites
 
@@ -27,14 +38,14 @@ Before you begin, ensure you have the following installed:
 
 - **Node.js** (v16 or higher)
 - **npm** or **yarn**
-- **Treasury Prime API credentials** (sandbox or production)
+- **Treasury Prime API credentials** (sandbox)
 
 ## 🚀 Quick Start
 
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone git@github.com:mereh74/banking-app.git
 cd banking-app
 ```
 
@@ -104,104 +115,6 @@ src/
 
 The application uses a Vite proxy configuration to handle CORS issues during development. The proxy automatically adds authentication headers to API requests.
 
-**Production Note**: For production deployment, you should use the included Express server (`server.js`) to handle API calls and avoid CORS issues.
-
-## 🚀 Deployment
-
-### Option 1: Vercel (Recommended)
-
-1. **Install Vercel CLI**:
-
-   ```bash
-   npm install -g vercel
-   ```
-
-2. **Build the application**:
-
-   ```bash
-   npm run build
-   ```
-
-3. **Deploy**:
-
-   ```bash
-   vercel
-   ```
-
-4. **Set Environment Variables** in Vercel dashboard:
-   - `VITE_TREASURY_PRIME_USERNAME`
-   - `VITE_TREASURY_PRIME_PASSWORD`
-
-### Option 2: Netlify
-
-1. **Build the application**:
-
-   ```bash
-   npm run build
-   ```
-
-2. **Deploy to Netlify**:
-
-   - Drag and drop the `dist` folder to Netlify
-   - Or connect your GitHub repository
-
-3. **Set Environment Variables** in Netlify dashboard
-
-### Option 3: Express Server (Production)
-
-For production environments where you need to handle CORS properly:
-
-1. **Install server dependencies**:
-
-   ```bash
-   npm install express cors node-fetch
-   ```
-
-2. **Set up environment variables**:
-
-   ```bash
-   TREASURY_PRIME_USERNAME=your_api_key_id
-   TREASURY_PRIME_PASSWORD=your_api_key_value
-   ```
-
-3. **Start the server**:
-
-   ```bash
-   node server.js
-   ```
-
-4. **Build and serve the frontend**:
-   ```bash
-   npm run build
-   # Serve the dist folder with your preferred static file server
-   ```
-
-### Option 4: Docker
-
-1. **Create a Dockerfile**:
-
-   ```dockerfile
-   FROM node:18-alpine
-
-   WORKDIR /app
-
-   COPY package*.json ./
-   RUN npm ci --only=production
-
-   COPY . .
-   RUN npm run build
-
-   EXPOSE 3000
-
-   CMD ["node", "server.js"]
-   ```
-
-2. **Build and run**:
-   ```bash
-   docker build -t banking-app .
-   docker run -p 3000:3000 -e TREASURY_PRIME_USERNAME=your_key -e TREASURY_PRIME_PASSWORD=your_secret banking-app
-   ```
-
 ## 🔒 Security Considerations
 
 - **Environment Variables**: Never commit API credentials to version control
@@ -221,21 +134,11 @@ For production environments where you need to handle CORS properly:
 - [ ] Error states display appropriately
 - [ ] Loading states show during API calls
 
-### Automated Testing (Future Enhancement)
-
-```bash
-# Install testing dependencies
-npm install --save-dev @testing-library/react @testing-library/jest-dom vitest
-
-# Run tests
-npm test
-```
-
 ## 🐛 Troubleshooting
 
 ### Common Issues
 
-1. **CORS Errors**: Ensure you're using the Vite proxy in development or Express server in production
+1. **CORS Errors**: Ensure you're using the Vite proxy in development
 2. **API Authentication**: Verify your Treasury Prime credentials are correct
 3. **Build Errors**: Check that all dependencies are installed
 4. **Environment Variables**: Ensure `.env` file is in the root directory
@@ -259,26 +162,6 @@ This application integrates with the Treasury Prime API. For detailed API docume
 - `GET /account/{account_id}` - Fetch account information
 - `GET /account/{account_id}/transaction` - Fetch transaction history
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-For support and questions:
-
-- **Issues**: Create an issue in the GitHub repository
-- **Documentation**: Check the Treasury Prime API documentation
-- **Community**: Join our community discussions
-
 ## 🔄 Changelog
 
 ### v1.0.0
@@ -291,5 +174,3 @@ For support and questions:
 - Professional banking UI
 
 ---
-
-**Note**: This application is for demonstration purposes. For production use, ensure proper security measures, error handling, and compliance with financial regulations.

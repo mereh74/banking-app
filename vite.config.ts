@@ -13,8 +13,8 @@ export default defineConfig(({ mode }) => {
           target: "https://api.sandbox.treasuryprime.com",
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
-          configure: (proxy, options) => {
-            proxy.on("proxyReq", (proxyReq, req, res) => {
+          configure: (proxy) => {
+            proxy.on("proxyReq", (proxyReq) => {
               const auth = Buffer.from(
                 `${env.VITE_TREASURY_PRIME_USERNAME}:${env.VITE_TREASURY_PRIME_PASSWORD}`
               ).toString("base64");
