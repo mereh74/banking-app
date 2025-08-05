@@ -32,6 +32,10 @@ A simple prototype of a banking application built with React, TypeScript, and Vi
     - they should be run as part of the integration and deployment pipelines
     - recommended use of [Cypress](https://www.cypress.io/) or [Playwright](https://playwright.dev/) for testing frameworks.
 
+## Caveats
+
+- As this application is currently for demonstration purposes only, it uses a hard-coded value for the bank account.
+
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
