@@ -22,6 +22,8 @@ A simple prototype of a banking application built with React, TypeScript, and Vi
   - As the current application only contains one view - `TransactionList.tsx` - routing was not a consideration at this time. In the future, as we add other views and navigation, we will need a solution for routing such as [React Router](https://reactrouter.com/).
 - **Remote State Management**
   - The application is currently managing its remote state within the `BankAccountProvider` using the `useEffect` and `useState` hooks provided by React. This is sufficient for now, as the application only requires fetching the data once at application load time. As we add more features, it will become necessary to consider things like caching and keeping the UI in sync with remote state from the Treasury Prime API. For this, we can investigate the use of solutions such as [Tanstack Query](https://tanstack.com/query/latest).
+- **Pagination**
+  - As this application is currently for demonstration purposes only, the list of transactions for the test account is very small. The offical recommendation from [Treasury Prime's API guide](https://docs.treasuryprime.com/reference/pagination#common-questions-about-pagination%3A) is to check for the existence of a `page_next` field in the API response and then use the URL value present there to load the next set of results. If this application were ever to be used in production for real bank accounts, it's recommended that we handle the subsequent fetches by checking for this value. As this is a banking application and a user will typically want to search transactions by date, it's recommended to use a tabbed approach to pagination rather than an infinite scroll for easier searching.
 - **Automated Testing**
   - As this is a simple prototype, no automated testing has been added. If this application were ever to be deployed to production, a prerequisite should be the addition of:
     - Unit tests
@@ -67,10 +69,6 @@ Create a `.env` file in the root directory:
 # For Vite (development)
 VITE_TREASURY_PRIME_USERNAME=your_api_key_id
 VITE_TREASURY_PRIME_PASSWORD=your_api_key_value
-
-# For production backend (if using Express server)
-TREASURY_PRIME_USERNAME=your_api_key_id
-TREASURY_PRIME_PASSWORD=your_api_key_value
 ```
 
 ### 4. Start Development Server
